@@ -1,0 +1,55 @@
+.header{
+    display: flex;
+    align-items: center;
+    padding: 2rem 6rem;
+}
+.header__logo-container{
+    width: 25%;
+}
+.header__logo-container h1{
+    margin: 0;
+}
+.header__list-container{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+.header__btn-container{
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header__btn-container a{
+    background: purple;
+    color: white;
+    padding: 0.7rem 1.8rem;
+    border-radius: 16px;
+    
+}
+
+.items{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.item{
+    margin: 0 1.5rem
+}
+
+.sticky{
+    position: fixed;
+    width: 100%;
+    background: white;
+    top: 0;
+    left: 0;
+    transform: translate(0, -200px);
+}
+
+.inView{
+    transform: translate(0, 0);
+
+    transition: all .5s ease;
+}
