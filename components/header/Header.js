@@ -5,8 +5,6 @@ import Link from 'next/link'
 function Header(props) {
   const sticky = props.class[0];
   const inView = props.class[1];
-  console.log(sticky);
-  console.log(inView);
   return (
     <header
       className={`${styles.header} ${styles[`${sticky}`]} ${

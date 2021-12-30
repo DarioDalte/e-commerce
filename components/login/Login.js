@@ -1,0 +1,156 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import styles from "./login.module.css";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import axios from "axios";
+import useInput from "../../components/hooks/use-input";
+
+function Login(props) {
+  const [values, setValues] = useState({ showPassword: false });
+  const [msgError, setMsgError] = useState("");
+  const router = useRouter();
+
+  const regExpL = /[a-zA-Z]/g;
+  const regExpN = /[0-9]/g;
+
+  const {
+    value: enteredPassword,
+    valueIsValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueHandler: passwordHandler,
+    inputBlur: passwordBlurHandler,
+    reset: passwordReset,
+  } = useInput(
+    (password) =>
+      password.trim().length >= 6 &&
+      regExpN.test(password) &&
+      regExpL.test(password)
+  );
+
+  const {
+    value: enteredEmail,
+    valueIsValid: emailIsValid,
+    hasError: emailHasError,
+    valueHandler: emailHandler,
+    inputBlur: emailBlurHandler,
+    reset: emailReset,
+  } = useInput(
+    (email) =>
+      email.includes("@") && email.includes(".") && email.trim().length > 6
+  );
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    emailBlurHandler();
+    passwordBlurHandler();
+
+    if (passwordIsValid && emailIsValid) {
+      let data = {
+        email: enteredEmail,
+        password: enteredPassword,
+      };
+      const url = "http://localhost:80/php-api/api/user/login.php";
+
+      axios
+        .post(url, data)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            console.log("si");
+            localStorage.setItem("token", res.data.token);
+            router.push({ pathname: "../Home/Home" });
+          } else {
+            setMsgError(res.data.message);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+  return (
+    <div className={styles["container"]}>
+      <div className={styles["form"]}>
+        <div className={styles["lock"]}>
+          <LockIcon sx={{ color: "white" }} />
+        </div>
+        <h1 className={styles["title"]}>Log-In</h1>
+        {msgError ? <h3 className={styles["msg-error"]}>{msgError}</h3> : ""}
+        <form onSubmit={submitHandler}>
+          <TextField
+            className={styles["input"]}
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            color="secondary"
+            value={enteredEmail}
+            onChange={emailHandler}
+            onBlur={emailBlurHandler}
+            error={emailHasError}
+          />
+          <FormControl className={styles["input"]} variant="outlined">
+            <InputLabel color="secondary" htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={values.showPassword ? "text" : "password"}
+              value={values.password}
+              color="secondary"
+              onChange={passwordHandler}
+              onBlur={passwordBlurHandler}
+              error={passwordHasError}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          <button className={styles["primary-btn"]}>Log In</button>
+        </form>
+        <div className={styles["contact-container"]}>
+          <a href="http://google.com" className={styles["contact"]}>
+            <TwitterIcon sx={{ color: "mediumturquoise" }} />
+          </a>
+          <a href="http://google.com" className={styles["contact"]}>
+            <WhatsAppIcon sx={{ color: "#1cdf1c" }} />
+          </a>
+          <a href="http://google.com" className={styles["contact"]}>
+            <EmailIcon sx={{ color: "purple" }} />
+          </a>
+        </div>
+      </div>
+      <div className={styles["change"]}>
+        <h1>Bentornato</h1>
+        <p>Se non possiedi un account registrati</p>
+        <span onClick={props.onClick} className={styles["secondary-btn"]}>Sign Up</span>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
