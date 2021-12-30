@@ -15,7 +15,7 @@ export default function Home() {
         if (!classList.includes("inView")) {
           setclassList(["sticky", "inView"]);
         }
-      }else{
+      } else {
         if (classList.length != 0) {
           setclassList([]);
         }
@@ -29,7 +29,7 @@ export default function Home() {
         <title>Home</title>
       </Head>
       <Header class={classList} />
-     
+   
     </>
   );
 }
