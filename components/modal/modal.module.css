@@ -20,8 +20,8 @@
   margin-top: 0;
 }
 
-.input{
-  margin: 1rem;
+.input, .date{
+  margin: 1rem !important;
 }
 .btn{
   padding: 0.7rem 2.3rem;
@@ -53,9 +53,7 @@
   flex-direction: column;
 }
 
-.date{
-  margin: 1rem;
-}
+
 
 @keyframes slide-down {
   from {
