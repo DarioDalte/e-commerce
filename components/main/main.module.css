@@ -1,0 +1,57 @@
+/* .main-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+} */
+
+.background{
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    url("../../public/main.jpg");
+
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.img-container{
+ display: flex;
+ justify-content: center;
+ padding: 2rem;
+  
+}
+
+.card{
+  width: 20%;
+  margin: 0 3rem;
+  height: 500px;
+  cursor: pointer;
+}
+
+.card:hover{
+  transform: scale(1.070);
+  transition: all .5s;
+}
+
+.btn{
+  background: white;
+  padding: 1rem 4rem;
+  border: 1px solid black;
+
+}
+
+
+.btn:hover{
+  background: black;
+  color: white;
+}

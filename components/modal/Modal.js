@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import styles from "./modal.module.css";
 import Backdrop from "../../UI/backdrop/Backdrop";
 import TextField from "@mui/material/TextField";
@@ -7,12 +7,15 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import itLocale from "date-fns/locale/it";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 function Modal(props) {
   const [value, setValue] = React.useState(null);
   const paeseRef = useRef();
   const provinciaRef = useRef();
   const indirizzoRef = useRef();
+  const router = useRouter();
 
   const {
     value: enteredCF,
@@ -41,28 +44,60 @@ function Modal(props) {
   } = useInput((TEL) => TEL.trim().length === 0 || TEL.trim().length === 10);
 
   function convertDate(inputFormat) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/')
+    function pad(s) {
+      return s < 10 ? "0" + s : s;
+    }
+    var d = new Date(inputFormat);
+    return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join("/");
   }
   const submitHandler = () => {
     let date = null;
     const dateIsValid = false;
-    if(value == null){
+    if (value == null) {
       dateIsValid = true;
-    }
-    else if(value != "Invalid Date"){
+    } else if (value != "Invalid Date") {
       date = convertDate(value);
       dateIsValid = true;
     }
-  
+
     if (CFIsValid && dateIsValid && CAPIsValid) {
-      const paese = paeseRef.current.value;
-      const provincia = provinciaRef.current.value;
-      const indirizzo = indirizzoRef.current.value;
+      const country = paeseRef.current.value;
+      const province = provinciaRef.current.value;
+      const address = indirizzoRef.current.value;
 
+      if (
+        country ||
+        province ||
+        address ||
+        date ||
+        enteredCAP ||
+        enteredTEL ||
+        enteredCF
+      ) {
+        console.log("tutto giusto");
+        const data = {
+          email: props.email,
+          country: country,
+          province: province,
+          address: address,
+          birth: date,
+          CAP: enteredCAP,
+          telephone: enteredTEL,
+          CF: enteredCF,
+        };
 
-      props.onSbmt(paese, provincia, indirizzo, date, enteredCAP, enteredTEL, enteredCF);
+        axios
+          .post(
+            "http://localhost:80/php-api/api/user/add-information.php",
+            data
+          )
+          .then((res) => {
+            router.push({ pathname: "../registrated" });
+          })
+          .catch((err) => console.log(err));
+      }else{
+        router.push({ pathname: "../registrated" });
+      }
     }
   };
 
@@ -86,7 +121,6 @@ function Modal(props) {
               variant="outlined"
               color="secondary"
               inputRef={provinciaRef}
-
             />
             <TextField
               className={styles["input"]}
@@ -94,7 +128,6 @@ function Modal(props) {
               variant="outlined"
               color="secondary"
               inputRef={indirizzoRef}
-
             />
           </div>
           <div className={styles["inputs"]}>
@@ -108,10 +141,11 @@ function Modal(props) {
               onChange={CAPHandler}
               onBlur={CAPBlurHandler}
               error={CAPHasError}
-              onInput = {(e) =>{
-                e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,5)
-            }}
-              
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 5);
+              }}
             />
             <TextField
               className={styles["input"]}
@@ -123,9 +157,11 @@ function Modal(props) {
               onChange={TELHandler}
               onBlur={TELBlurHandler}
               error={TELHasError}
-              onInput = {(e) =>{
-                e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,10)
-            }}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10);
+              }}
             />
             <TextField
               className={styles["input"]}
@@ -137,7 +173,6 @@ function Modal(props) {
               onBlur={CFBlurHandler}
               error={CFHasError}
               inputProps={{ maxLength: 16 }}
-              
             />
           </div>
         </div>
@@ -152,7 +187,11 @@ function Modal(props) {
               setValue(newValue);
             }}
             renderInput={(params) => (
-              <TextField {...params} color="secondary" className={styles["date"]} />
+              <TextField
+                {...params}
+                color="secondary"
+                className={styles["date"]}
+              />
             )}
           />
         </LocalizationProvider>

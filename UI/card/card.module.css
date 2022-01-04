@@ -1,0 +1,26 @@
+.card{
+position: relative;
+display: flex;
+align-items: flex-end;
+justify-content: center;
+
+}
+.img{
+    z-index: -1;
+}
+
+.btn{
+    background: white;
+    width: 80%;
+    text-align: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border: 1px solid black;
+    z-index: 3;
+}
+
+.btn:hover{
+    color: white;
+    background: black;
+}
+
