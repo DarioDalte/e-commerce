@@ -43,7 +43,7 @@ export default function Home() {
     if (localStorage.getItem("token")) {
       const token = "Bearer " + localStorage.getItem("token");
       axios
-        .get("https://php-e-commerce-api.herokuapp.com/user/user-info.php", {
+        .get("https://php-e-commerce-api.herokuapp.com/api/user/user-info.php", {
           headers: {
             Authorization: token,
           },
