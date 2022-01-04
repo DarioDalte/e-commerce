@@ -88,7 +88,7 @@ function Modal(props) {
 
         axios
           .post(
-            "http://localhost:80/php-api/api/user/add-information.php",
+            "https://php-e-commerce-api.herokuapp.com/api/user/add-information.php",
             data
           )
           .then((res) => {
