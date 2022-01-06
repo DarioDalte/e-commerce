@@ -1,0 +1,48 @@
+.container{
+    
+    width: 27%;
+    margin: 1rem 1rem;
+    background-color: #111;
+    position: relative;
+    height: 350px;
+    
+}
+
+.img{
+    transition: all .5s;
+
+}
+
+.img:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+
+
+    
+}
+
+.title{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1rem;
+
+}
+
+.hovered{
+    transition: all .8s;
+    margin: 0;
+
+    background: purple;
+}
+
+.favorite{
+    width: 35px;
+    height: 35px;
+}

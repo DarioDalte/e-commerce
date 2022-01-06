@@ -256,6 +256,7 @@ function Index(props) {
                   </p>
                 )}
               </FormControl>
+              
 
               <button className={styles["primary-btn"]}>Sign Up</button>
             </form>
