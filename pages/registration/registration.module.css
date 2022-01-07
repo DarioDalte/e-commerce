@@ -1,12 +1,16 @@
-.change{
-    border-radius: 20px 0 0 20px;
+.change {
+  border-radius: 20px 0 0 20px;
 }
 
-.err{
-    color: red;
-    margin: 0;
-    margin-top: 0.5rem;
-    margin-left: 1rem;
+.err {
+  color: red;
+  margin: 0;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
 }
 
-
+@media screen and (max-width: 39rem) {
+  .change {
+    border-radius: 0;
+  }
+}

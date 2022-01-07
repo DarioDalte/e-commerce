@@ -14,7 +14,7 @@ function Card(props) {
   
 
   return (
-    <div
+    <a
       onMouseEnter={howerHandler}
       onMouseLeave={howerHandler}
       className={`${styles["card"]} ${props.classes}`}
@@ -27,11 +27,11 @@ function Card(props) {
         objectFit="cover"
       />
       {showButton && (
-        <Link href="/" >
+        <Link href="/home" >
           <a className={styles["btn"]}>Inizia a comprare</a>
         </Link>
       )}
-    </div>
+    </a>
   );
 }
 

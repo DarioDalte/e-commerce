@@ -191,8 +191,8 @@ function Index(props) {
               </div>
             </div>
             <div className={styles["change"]}>
-              <h1>Bentornato</h1>
-              <p>Se non possiedi un account registrati</p>
+              <h1 className={styles.titleRight}>Bentornato</h1>
+              <p className={styles.subtitle}>Se non possiedi un account registrati</p>
               <Link href="/../registration">
                 <a className={styles["secondary-btn"]}>Sign Up</a>
               </Link>

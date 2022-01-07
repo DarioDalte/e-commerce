@@ -1,73 +1,82 @@
-.header{
-    display: flex;
-    align-items: center;
-    padding: 2rem 6rem;
-    background: transparent;
-    z-index: 50;
-    color: white;
-    position: absolute;
-    width: 100%;
-    
-
+.header {
+  display: flex;
+  align-items: center;
+  padding: 2rem 6rem;
+  background: transparent;
+  z-index: 50;
+  color: white;
+  position: absolute;
+  width: 100%;
 }
-.header__logo-container{
-    width: 25%;
+.header__logo-container {
+  width: 25%;
 }
-.header__logo-container h1{
-    margin: 0;
+.header__logo-container h1 {
+  margin: 0;
 }
-.header__list-container{
-    width: 50%;
-    display: flex;
-    justify-content: center;
+.header__list-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
-.header__btn-container{
-    width: 25%;
-    display: flex;
-    justify-content: flex-end;
+.header__btn-container {
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.header__btn-container a{
-    background: purple;
-    color: white;
-    padding: 0.7rem 1.8rem;
-    border-radius: 16px;
-    
+.header__btn-container a {
+  background: purple;
+  color: white;
+  padding: 0.7rem 1.8rem;
+  border-radius: 16px;
 }
 
-.items{
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.items {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.item{
-    margin: 0 1.5rem
+.item {
+  margin: 0 1.5rem;
 }
 
-.sticky{
-    position: fixed;
-    width: 100%;
-    background: white;
-    top: 0;
-    left: 0;
-    transform: translate(0, -200px);
-    color: black;
-
+.sticky {
+  position: fixed;
+  width: 100%;
+  background: white;
+  top: 0;
+  left: 0;
+  transform: translate(0, -200px);
+  color: black;
 }
 
-.inView{
-    transform: translate(0, 0);
+.inView {
+  transform: translate(0, 0);
 
-    transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 
-.dashboard{
-    cursor: pointer;
+.dashboard {
+  cursor: pointer;
 }
 
 .dashboard:hover,
-.dashboard:active{
-font-weight: bold;
+.dashboard:active {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 992px) {
+  .header__list-container{
+      display: none;
+  }
+  .header {
+      justify-content: space-between;
+      padding: 2rem;
+  }
+  .header__btn-container{
+      width: auto;
+  }
 }

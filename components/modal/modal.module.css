@@ -18,6 +18,7 @@
 .title{
   color: purple;
   margin-top: 0;
+  text-align: center;
 }
 
 .input, .date{
@@ -64,5 +65,48 @@
   to {
     opacity: 1;
     transform: translate(-50%,-50%);
+  }
+}
+
+@media screen and (max-width: 69rem) {
+  .modal {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 43rem) {
+  .modal {
+    width: 90%;
+    padding: 1rem;
+  }
+ 
+}
+
+@media screen and (max-width: 31rem) {
+  .input-container{
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    
+  }
+  .inputs{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .input{
+    width: 50% !important;
+  }
+  .country{
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 28rem) {
+  .input{
+    width: 80% !important;
   }
 }
