@@ -32,8 +32,6 @@ function Product() {
         className={styles.img}
         src="/cappello.png"
         alt="Picture of the author"
-        height={350}
-        width={350}
         layout="fill"
       />
     </div>

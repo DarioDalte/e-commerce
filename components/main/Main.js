@@ -17,7 +17,6 @@ function Main() {
         <Card url="category_1.webp" alt="Zaino" classes={styles.card} />
         <Card url="category_2.webp" alt="Vestito" classes={styles.card} />
         <Card url="category_3.webp" alt="Scarpa" classes={styles.card} />
-
         <Card url="category_4.webp" alt="Cappello" classes={styles.card} />
       </div>
     </main>
