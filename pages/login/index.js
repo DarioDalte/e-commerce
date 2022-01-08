@@ -32,20 +32,22 @@ function Index(props) {
     if (localStorage.getItem("token")) {
       const token = "Bearer " + localStorage.getItem("token");
       axios
-        .get("https://php-e-commerce-api.herokuapp.com/api/user/user-info.php", {
-          headers: {
-            Authorization: token,
-          },
-        })
+        .get(
+          "https://php-e-commerce-api.herokuapp.com/api/user/user-info.php",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
         .then((res) => {
           if (res.data.success) {
             router.push({ pathname: "../home" });
-          }else{
+          } else {
             setIsLoading(false);
           }
-          
         })
-        .catch((err) => console.log(err));
+        .catch((err) => setIsLoading(false));
     } else {
       setIsLoading(false);
     }
@@ -192,7 +194,9 @@ function Index(props) {
             </div>
             <div className={styles["change"]}>
               <h1 className={styles.titleRight}>Bentornato</h1>
-              <p className={styles.subtitle}>Se non possiedi un account registrati</p>
+              <p className={styles.subtitle}>
+                Se non possiedi un account registrati
+              </p>
               <Link href="/../registration">
                 <a className={styles["secondary-btn"]}>Sign Up</a>
               </Link>
