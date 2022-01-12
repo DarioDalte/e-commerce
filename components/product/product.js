@@ -33,6 +33,7 @@ function Product() {
         src="/cappello.png"
         alt="Picture of the author"
         layout="fill"
+
       />
     </div>
   );

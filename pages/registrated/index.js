@@ -20,7 +20,6 @@ function Index() {
           }
         )
         .then((res) => {
-          console.log(res.data);
           if (res.data.success) {
             setUser(res.data.user.name);
             setIsLogged(true);

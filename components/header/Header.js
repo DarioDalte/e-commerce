@@ -24,12 +24,41 @@ function Header(props) {
     setAnchorEl(null);
   };
 
-  const logoutHandle = () =>{
+  const logoutHandle = () => {
     setAnchorEl(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     props.logout();
-  }
+  };
 
+  let profile = "";
+  if (props.isLogged === true) {
+    profile = (
+      <>
+        <span onClick={handleClick} className={styles["dashboard"]}>
+          Ciao {props.user}
+        </span>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          <MenuItem onClick={handleClose}>My account</MenuItem>
+          <MenuItem onClick={logoutHandle}>Logout</MenuItem>
+        </Menu>
+      </>
+    );
+  } else if (props.isLogged === false) {
+    profile = (
+      <Link href="./login">
+        <a href="./login">Log-in</a>
+      </Link>
+    );
+  }
 
   return (
     <header
@@ -58,30 +87,7 @@ function Header(props) {
         </ul>
       </div>
       <div className={styles["header__btn-container"]}>
-        {props.user ? (
-          <>
-            <span onClick={handleClick} className={styles["dashboard"]}>
-              Ciao {props.user}
-            </span>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={logoutHandle}>Logout</MenuItem>
-            </Menu>
-          </>
-        ) : (
-          <Link href="./login">
-            <a href="./login">Log-in</a>
-          </Link>
-        )}
+        {profile}
       </div>
     </header>
   );

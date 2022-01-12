@@ -1,4 +1,4 @@
-This is an [e-commerce](https://e-commerce-145i93erw-dariodalte.vercel.app/) project which use [Next.js](https://nextjs.org/) for the Front-End and PHP for the Back-End.
+This is an [e-commerce](https://e-commerce-mocha.vercel.app/) project which use [Next.js](https://nextjs.org/) for the Front-End and PHP for the Back-End.
 
 The Back-End repository can be found [here](https://github.com/DarioDalte/e-commerce-api).
 

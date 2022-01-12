@@ -6,15 +6,18 @@ import Footer from "../components/footer/Footer";
 import logo_white from "../public/logo_white.png";
 import logo_black from "../public/logo_black.png";
 import axios from "axios";
-
+import { useSelector, useDispatch } from "react-redux";
+import Loading from "../UI/loading/Loading";
 
 export default function Home() {
   const [classList, setclassList] = useState([]);
   const [logo, setLogo] = useState(logo_white);
   const [user, setUser] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isLogged, setIsLogged] = useState(false);
-
+  const dispatch = useDispatch();
+  const isLogged = useSelector((state) => state.isLogged);
+  const userEmail = useSelector((state) => state.email);
+  const userName = useSelector((state) => state.name);
 
   useEffect(() => {
     window.onscroll = () => {
@@ -36,46 +39,64 @@ export default function Home() {
     };
   }, [classList]);
 
-
-  
-
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = "Bearer " + localStorage.getItem("token");
-      axios
-        .get("https://php-e-commerce-api.herokuapp.com/api/user/user-info.php", {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.success) {
-            setUser(res.data.user.name);
-            setIsLogged(true);
-          }
-          setIsLoading(false);
-        })
-        .catch((err) => console.log(err));
+    if (isLogged === null) {
+      if (localStorage.getItem("token")) {
+        const token = "Bearer " + localStorage.getItem("token");
+        axios
+          .get(
+            "https://php-e-commerce-api.herokuapp.com/api/user/user-info.php",
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.data.success) {
+              dispatch({
+                type: "LOGGED",
+                email: res.data.user.email,
+                name: res.data.user.name,
+              });
+              setIsLoading(false);
+            } else {
+              dispatch({ type: "NOT_LOGGED" });
+              setIsLoading(false);
+            }
+          })
+          .catch((err) => {
+            dispatch({ type: "NOT_LOGGED" });
+            setIsLoading(false);
+          });
+      } else {
+        dispatch({ type: "NOT_LOGGED" });
+        setIsLoading(false);
+      }
     } else {
       setIsLoading(false);
     }
   }, []);
 
-  const logoutHandler = () =>{
-    setUser("");
-  }
-
+  const logoutHandler = () => {
+    dispatch({ type: "NOT_LOGGED" });
+  };
 
   return (
     <>
       <Head>
         <title>Home</title>
       </Head>
-      <Header logo={logo} class={classList} user={user} logout={logoutHandler} />
-      <Main/>
-      <Footer/>
-   
+      <Loading open={isLoading} />
+      <Header
+        logo={logo}
+        class={classList}
+        user={userName}
+        logout={logoutHandler}
+        isLogged={isLogged}
+      />
+      <Main />
+      <Footer />
     </>
   );
 }

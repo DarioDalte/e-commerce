@@ -18,40 +18,63 @@ import useInput from "../../components/hooks/use-input";
 import Head from "next/head";
 import Link from "next/link";
 import Loading from "../../UI/loading/Loading";
+import { useSelector, useDispatch } from "react-redux";
 
 function Index(props) {
   const [values, setValues] = useState({ showPassword: false });
   const [msgError, setMsgError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const isLogged = useSelector((state) => state.isLogged);
+  const userEmail = useSelector((state) => state.email);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDisplayed, setIsDisplayed] = useState(false);
   const regExpL = /[a-zA-Z]/g;
   const regExpN = /[0-9]/g;
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = "Bearer " + localStorage.getItem("token");
-      axios
-        .get(
-          "https://php-e-commerce-api.herokuapp.com/api/user/user-info.php",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        .then((res) => {
-          if (res.data.success) {
-            router.push({ pathname: "../home" });
-          } else {
+    if (isLogged === null) {
+      if (localStorage.getItem("token")) {
+        const token = "Bearer " + localStorage.getItem("token");
+        axios
+          .get(
+            "https://php-e-commerce-api.herokuapp.com/api/user/user-info.php",
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          )
+          .then((res) => {
+            if (res.data.success) {
+              dispatch({
+                type: "LOGGED",
+                email: res.data.user.email,
+                name: res.data.user.name,
+              });
+              router.push({ pathname: "../home" });
+            } else {
+              dispatch({ type: "NOT_LOGGED" });
+              setIsLoading(false);
+            }
+          })
+          .catch((err) => {
+            dispatch({ type: "NOT_LOGGED" });
             setIsLoading(false);
-          }
-        })
-        .catch((err) => setIsLoading(false));
+          });
+      } else {
+        dispatch({ type: "NOT_LOGGED" });
+        setIsLoading(false);
+        setIsDisplayed(true);
+      }
+    } else if (isLogged === true) {
+      router.push({ pathname: "../home" });
     } else {
       setIsLoading(false);
+      setIsDisplayed(true);
     }
-  }, [router]);
+  }, []);
 
   const {
     value: enteredPassword,
@@ -85,6 +108,8 @@ function Index(props) {
     passwordBlurHandler();
 
     if (passwordIsValid && emailIsValid) {
+      setIsLoading(true);
+      setIsDisplayed(true);
       let data = {
         email: enteredEmail,
         password: enteredPassword,
@@ -94,12 +119,31 @@ function Index(props) {
       axios
         .post(url, data)
         .then((res) => {
-          console.log(res.data);
           if (res.data.success) {
-            console.log("si");
             localStorage.setItem("token", res.data.token);
-            router.push({ pathname: "../home" });
+            const token = "Bearer " + localStorage.getItem("token");
+            axios
+              .get(
+                "https://php-e-commerce-api.herokuapp.com/api/user/user-info.php",
+                {
+                  headers: {
+                    Authorization: token,
+                  },
+                }
+              )
+              .then((res) => {
+                setIsLoading(false);
+                if (res.data.success) {
+                  dispatch({
+                    type: "LOGGED",
+                    email: res.data.user.email,
+                    name: res.data.user.name,
+                  });
+                  router.push({ pathname: "../home" });
+                }
+              });
           } else {
+            setIsLoading(false);
             setMsgError(res.data.message);
           }
         })
@@ -113,14 +157,15 @@ function Index(props) {
       showPassword: !values.showPassword,
     });
   };
+
   return (
     <>
       <Head>
         <title>Login</title>
       </Head>
-      {isLoading ? (
-        <Loading open={true} />
-      ) : (
+
+      <Loading open={isLoading}/>
+      {isDisplayed ? (
         <div className={styles["body"]}>
           <div className={styles["container"]}>
             <div className={styles["form"]}>
@@ -203,6 +248,8 @@ function Index(props) {
             </div>
           </div>
         </div>
+      ) : (
+        ""
       )}
     </>
   );
